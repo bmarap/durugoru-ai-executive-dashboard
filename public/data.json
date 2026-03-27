@@ -1,0 +1,83 @@
+[
+  {
+    "server_name": "db-node-01",
+    "analysis_timestamp": "2026-03-27T13:45:00Z",
+    "ai_classification": "ZOMBIE",
+    "confidence_score": 0.98,
+    "decision_rationale": "Sunucu son 7 gün boyunca %2.1 CPU ve %14 RAM kullanımında sabit kalmıştır. Firewall üzerinde hiçbir dış bağlantı veya uygulama trafiği görülmemiş olup, loglar sadece işletim sistemi arka plan görevlerinden (cron, sshd) ibarettir.",
+    "ai_anomaly_scores": {
+      "lstm_temporal_anomaly_score": 98.2,
+      "peer_comparison_anomaly_score": 85.0
+    },
+    "evidence_metrics": {
+      "time_window_hours": 168,
+      "cpu_usage_max_pct": 2.15,
+      "mem_usage_max_pct": 14.30,
+      "net_usage_max": 0.05
+    },
+    "evidence_logs": {
+      "total_log_count": 4120,
+      "unique_patterns_found": 12,
+      "log_summary": "- OLAY TİPİ 0: 4000 kez. Örnek: 'sshd: session opened for user root'\n- GÜRÜLTÜ: 120 kez. Örnek: 'CRON[1234]: pam_unix(cron:session): session closed for user root'"
+    },
+    "evidence_firewall": {
+      "total_sessions": 0,
+      "unique_destinations": 0,
+      "apps_detected": "None"
+    }
+  },
+  {
+    "server_name": "web-prod-ist-04",
+    "analysis_timestamp": "2026-03-27T13:45:00Z",
+    "ai_classification": "ACTIVE",
+    "confidence_score": 0.99,
+    "decision_rationale": "Sunucu yüksek CPU (%78) ve RAM (%82) kullanımına sahiptir. Nginx ve veritabanı logları aktif müşteri trafiğini doğrulamakta olup, Firewall üzerinde binlerce aktif oturum tespit edilmiştir.",
+    "ai_anomaly_scores": {
+      "lstm_temporal_anomaly_score": 12.4,
+      "peer_comparison_anomaly_score": 8.1
+    },
+    "evidence_metrics": {
+      "time_window_hours": 168,
+      "cpu_usage_max_pct": 78.40,
+      "mem_usage_max_pct": 82.10,
+      "net_usage_max": 450.22
+    },
+    "evidence_logs": {
+      "total_log_count": 875432,
+      "unique_patterns_found": 315,
+      "log_summary": "- OLAY TİPİ 1: 500000 kez. Örnek: 'GET /api/v1/users HTTP/1.1 200'\n- OLAY TİPİ 2: 300000 kez. Örnek: 'POST /checkout/process HTTP/1.1 201'"
+    },
+    "evidence_firewall": {
+      "total_sessions": 14502,
+      "unique_destinations": 340,
+      "apps_detected": "web-browsing, ssl, mysql"
+    }
+  },
+  {
+    "server_name": "batch-worker-02",
+    "analysis_timestamp": "2026-03-27T13:45:00Z",
+    "ai_classification": "ZOMBIE",
+    "confidence_score": 0.65,
+    "decision_rationale": "Sunucu CPU kullanımı düşük olsa da, Firewall üzerinde nadir de olsa şirket içi bir veritabanına bağlanma girişimleri (MySQL) tespit edilmiştir. Loglarda terkedilmiş bir scriptin hata mesajları görülmektedir. Büyük ihtimalle atıl durumda ancak son bir kontrol önerilir.",
+    "ai_anomaly_scores": {
+      "lstm_temporal_anomaly_score": 65.5,
+      "peer_comparison_anomaly_score": 45.2
+    },
+    "evidence_metrics": {
+      "time_window_hours": 168,
+      "cpu_usage_max_pct": 8.50,
+      "mem_usage_max_pct": 22.00,
+      "net_usage_max": 12.40
+    },
+    "evidence_logs": {
+      "total_log_count": 12500,
+      "unique_patterns_found": 45,
+      "log_summary": "- OLAY TİPİ 0: 12000 kez. Örnek: 'Connection refused: cannot connect to DB_HOST'\n- GÜRÜLTÜ: 500 kez. Örnek: 'Failed password for invalid user admin'"
+    },
+    "evidence_firewall": {
+      "total_sessions": 45,
+      "unique_destinations": 1,
+      "apps_detected": "mysql"
+    }
+  }
+]

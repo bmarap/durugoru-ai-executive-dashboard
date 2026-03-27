@@ -11,12 +11,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = import.meta.env.VITE_API_URL;
-        if (!url) {
-          throw new Error('VITE_API_URL is not defined in environment variables');
-        }
-        
-        const response = await fetch(url);
+        const response = await fetch('/data.json');
         if (!response.ok) {
           throw new Error(`Failed to fetch data: ${response.status} ${response.statusText}`);
         }
