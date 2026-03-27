@@ -32,24 +32,24 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                         <div>
                             <div className="flex justify-between mb-1">
                                 <span className="text-brand-slate">LSTM Temporal</span>
-                                <span className="text-brand-silver font-mono">{server.ai_anomaly_scores.lstm_temporal_anomaly_score}%</span>
+                                <span className="text-brand-silver font-mono">{server.ai_anomaly_scores?.lstm_temporal_anomaly_score ?? 0}%</span>
                             </div>
                             <div className="w-full bg-black/40 rounded-full h-2">
                                 <div
-                                    className={`h-2 rounded-full ${server.ai_anomaly_scores.lstm_temporal_anomaly_score > 70 ? 'bg-brand-orange' : 'bg-brand-cyan'}`}
-                                    style={{ width: `${server.ai_anomaly_scores.lstm_temporal_anomaly_score}%` }}
+                                    className={`h-2 rounded-full ${(server.ai_anomaly_scores?.lstm_temporal_anomaly_score ?? 0) > 70 ? 'bg-brand-orange' : 'bg-brand-cyan'}`}
+                                    style={{ width: `${server.ai_anomaly_scores?.lstm_temporal_anomaly_score ?? 0}%` }}
                                 ></div>
                             </div>
                         </div>
                         <div>
                             <div className="flex justify-between mb-1">
                                 <span className="text-brand-slate">Peer Comparison</span>
-                                <span className="text-brand-silver font-mono">{server.ai_anomaly_scores.peer_comparison_anomaly_score}%</span>
+                                <span className="text-brand-silver font-mono">{server.ai_anomaly_scores?.peer_comparison_anomaly_score ?? 0}%</span>
                             </div>
                             <div className="w-full bg-black/40 rounded-full h-2">
                                 <div
-                                    className={`h-2 rounded-full ${server.ai_anomaly_scores.peer_comparison_anomaly_score > 70 ? 'bg-brand-orange' : 'bg-brand-cyan'}`}
-                                    style={{ width: `${server.ai_anomaly_scores.peer_comparison_anomaly_score}%` }}
+                                    className={`h-2 rounded-full ${(server.ai_anomaly_scores?.peer_comparison_anomaly_score ?? 0) > 70 ? 'bg-brand-orange' : 'bg-brand-cyan'}`}
+                                    style={{ width: `${server.ai_anomaly_scores?.peer_comparison_anomaly_score ?? 0}%` }}
                                 ></div>
                             </div>
                         </div>
@@ -61,16 +61,16 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                     <div className="bg-panel-bg p-4 rounded border border-panel-border space-y-2">
                         <div className="flex justify-between">
                             <span className="text-brand-slate">Total Sessions</span>
-                            <span className="text-brand-silver font-mono">{server.evidence_firewall.total_sessions.toLocaleString()}</span>
+                            <span className="text-brand-silver font-mono">{server.evidence_firewall?.total_sessions?.toLocaleString() ?? 0}</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-brand-slate">Unique Dest.</span>
-                            <span className="text-brand-silver font-mono">{server.evidence_firewall.unique_destinations}</span>
+                            <span className="text-brand-silver font-mono">{server.evidence_firewall?.unique_destinations ?? 0}</span>
                         </div>
                         <div className="flex justify-between border-t border-panel-border pt-2 mt-2">
                             <span className="text-brand-slate">Apps Detected</span>
-                            <span className="text-brand-silver truncate ml-2" title={server.evidence_firewall.apps_detected}>
-                                {server.evidence_firewall.apps_detected}
+                            <span className="text-brand-silver truncate ml-2" title={server.evidence_firewall?.apps_detected || 'None'}>
+                                {server.evidence_firewall?.apps_detected || 'None'}
                             </span>
                         </div>
                     </div>
@@ -81,14 +81,14 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                     <div className="bg-panel-bg p-4 rounded border border-panel-border space-y-2">
                         <div className="flex justify-between">
                             <span className="text-brand-slate">Total Logs</span>
-                            <span className="text-brand-silver font-mono">{server.evidence_logs.total_log_count.toLocaleString()}</span>
+                            <span className="text-brand-silver font-mono">{server.evidence_logs?.total_log_count?.toLocaleString() ?? 0}</span>
                         </div>
                         <div className="flex justify-between mb-2">
                             <span className="text-brand-slate">Unique Patterns</span>
-                            <span className="text-brand-silver font-mono">{server.evidence_logs.unique_patterns_found}</span>
+                            <span className="text-brand-silver font-mono">{server.evidence_logs?.unique_patterns_found ?? 0}</span>
                         </div>
                         <div className="text-xs text-brand-silver bg-black/30 border border-panel-border p-2 rounded whitespace-pre-wrap font-mono uppercase">
-                            {server.evidence_logs.log_summary}
+                            {server.evidence_logs?.log_summary || '-'}
                         </div>
                     </div>
                 </div>

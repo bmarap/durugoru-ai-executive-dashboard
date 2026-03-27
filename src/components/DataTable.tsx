@@ -60,12 +60,12 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                         bValue = b.confidence_score;
                         break;
                     case 'cpu':
-                        aValue = a.evidence_metrics.cpu_usage_max_pct;
-                        bValue = b.evidence_metrics.cpu_usage_max_pct;
+                        aValue = a.evidence_metrics?.cpu_usage_max_pct ?? 0;
+                        bValue = b.evidence_metrics?.cpu_usage_max_pct ?? 0;
                         break;
                     case 'ram':
-                        aValue = a.evidence_metrics.mem_usage_max_pct;
-                        bValue = b.evidence_metrics.mem_usage_max_pct;
+                        aValue = a.evidence_metrics?.mem_usage_max_pct ?? 0;
+                        bValue = b.evidence_metrics?.mem_usage_max_pct ?? 0;
                         break;
                     default:
                         return 0;
@@ -193,13 +193,13 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-silver font-mono">
-                                            {server.evidence_metrics.cpu_usage_max_pct}%
+                                            {server.evidence_metrics?.cpu_usage_max_pct ?? '-'}%
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-silver font-mono">
-                                            {server.evidence_metrics.mem_usage_max_pct}%
+                                            {server.evidence_metrics?.mem_usage_max_pct ?? '-'}%
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-slate max-w-[150px] truncate" title={server.evidence_firewall.apps_detected}>
-                                            {server.evidence_firewall.apps_detected}
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-slate max-w-[150px] truncate" title={server.evidence_firewall?.apps_detected || 'None'}>
+                                            {server.evidence_firewall?.apps_detected || 'None'}
                                         </td>
                                     </tr>
                                     {isExpanded && (
