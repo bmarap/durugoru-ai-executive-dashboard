@@ -6,6 +6,26 @@ interface DataTableProps {
     data: any[];
 }
 
+const getFirewallAppsString = (firewall: any) => {
+    if (!firewall) return 'None';
+    // Backwards compatibility
+    if (firewall.apps_detected) {
+        return Array.isArray(firewall.apps_detected) 
+            ? firewall.apps_detected.join(', ') 
+            : firewall.apps_detected;
+    }
+    
+    // New nested format
+    const outApps = firewall.outbound?.apps_detected;
+    const inApps = firewall.inbound?.apps_detected;
+    
+    const outStr = Array.isArray(outApps) ? outApps.join(', ') : (outApps === 'None' ? '' : outApps);
+    const inStr = Array.isArray(inApps) ? inApps.join(', ') : (inApps === 'None' ? '' : inApps);
+    
+    const combined = [outStr, inStr].filter(Boolean).join(' | ');
+    return combined || 'None';
+};
+
 export const DataTable: React.FC<DataTableProps> = ({ data }) => {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<string>('ALL');
@@ -198,8 +218,8 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-silver font-mono">
                                             {server.evidence_metrics?.mem_usage_max_pct ?? '-'}%
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-slate max-w-[150px] truncate" title={server.evidence_firewall?.apps_detected || 'None'}>
-                                            {server.evidence_firewall?.apps_detected || 'None'}
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-brand-slate max-w-[150px] truncate" title={getFirewallAppsString(server.evidence_firewall)}>
+                                            {getFirewallAppsString(server.evidence_firewall)}
                                         </td>
                                     </tr>
                                     {isExpanded && (

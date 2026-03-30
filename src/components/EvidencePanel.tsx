@@ -4,6 +4,11 @@ interface EvidencePanelProps {
     server: any;
 }
 
+const renderApps = (apps: any) => {
+    if (!apps || apps === 'None') return 'None';
+    return Array.isArray(apps) ? apps.join(', ') : String(apps);
+};
+
 export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
     return (
         <div className="bg-black/20 border-x border-b border-panel-border p-6 shadow-inner text-sm animate-in fade-in slide-in-from-top-2 duration-200">
@@ -58,22 +63,72 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
 
                 <div>
                     <h4 className="text-white font-semibold mb-3 uppercase tracking-wider text-xs">Section C: Network & Firewall</h4>
-                    <div className="bg-panel-bg p-4 rounded border border-panel-border space-y-2">
-                        <div className="flex justify-between">
-                            <span className="text-brand-slate">Total Sessions</span>
-                            <span className="text-brand-silver font-mono">{server.evidence_firewall?.total_sessions?.toLocaleString() ?? 0}</span>
+                    {server.evidence_firewall?.outbound || server.evidence_firewall?.inbound ? (
+                        <div className="bg-panel-bg p-4 rounded border border-panel-border space-y-4">
+                            {/* Outbound */}
+                            {server.evidence_firewall.outbound && (
+                                <div>
+                                    <h5 className="text-brand-slate text-xs uppercase mb-2">Outbound</h5>
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between">
+                                            <span className="text-brand-slate text-xs">Sessions</span>
+                                            <span className="text-brand-silver font-mono text-xs">{Number(server.evidence_firewall.outbound.sessions || 0).toLocaleString()}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-brand-slate text-xs">Unique Dest.</span>
+                                            <span className="text-brand-silver font-mono text-xs">{Number(server.evidence_firewall.outbound.unique_dests || 0).toLocaleString()}</span>
+                                        </div>
+                                        <div className="flex justify-between border-t border-panel-border/50 pt-1 mt-1">
+                                            <span className="text-brand-slate text-xs">Apps</span>
+                                            <span className="text-brand-silver truncate ml-2 text-xs" title={renderApps(server.evidence_firewall.outbound.apps_detected)}>
+                                                {renderApps(server.evidence_firewall.outbound.apps_detected)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            
+                            {/* Inbound */}
+                            {server.evidence_firewall.inbound && (
+                                <div className={server.evidence_firewall.outbound ? "pt-3 border-t border-panel-border" : ""}>
+                                    <h5 className="text-brand-slate text-xs uppercase mb-2">Inbound</h5>
+                                    <div className="space-y-1">
+                                        <div className="flex justify-between">
+                                            <span className="text-brand-slate text-xs">Sessions</span>
+                                            <span className="text-brand-silver font-mono text-xs">{Number(server.evidence_firewall.inbound.sessions || 0).toLocaleString()}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-brand-slate text-xs">Unique Src.</span>
+                                            <span className="text-brand-silver font-mono text-xs">{Number(server.evidence_firewall.inbound.unique_sources || 0).toLocaleString()}</span>
+                                        </div>
+                                        <div className="flex justify-between border-t border-panel-border/50 pt-1 mt-1">
+                                            <span className="text-brand-slate text-xs">Apps</span>
+                                            <span className="text-brand-silver truncate ml-2 text-xs" title={renderApps(server.evidence_firewall.inbound.apps_detected)}>
+                                                {renderApps(server.evidence_firewall.inbound.apps_detected)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                        <div className="flex justify-between">
-                            <span className="text-brand-slate">Unique Dest.</span>
-                            <span className="text-brand-silver font-mono">{server.evidence_firewall?.unique_destinations ?? 0}</span>
+                    ) : (
+                        <div className="bg-panel-bg p-4 rounded border border-panel-border space-y-2">
+                            <div className="flex justify-between">
+                                <span className="text-brand-slate">Total Sessions</span>
+                                <span className="text-brand-silver font-mono">{server.evidence_firewall?.total_sessions?.toLocaleString() ?? 0}</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-brand-slate">Unique Dest.</span>
+                                <span className="text-brand-silver font-mono">{server.evidence_firewall?.unique_destinations ?? 0}</span>
+                            </div>
+                            <div className="flex justify-between border-t border-panel-border pt-2 mt-2">
+                                <span className="text-brand-slate">Apps Detected</span>
+                                <span className="text-brand-silver truncate ml-2" title={renderApps(server.evidence_firewall?.apps_detected)}>
+                                    {renderApps(server.evidence_firewall?.apps_detected)}
+                                </span>
+                            </div>
                         </div>
-                        <div className="flex justify-between border-t border-panel-border pt-2 mt-2">
-                            <span className="text-brand-slate">Apps Detected</span>
-                            <span className="text-brand-silver truncate ml-2" title={server.evidence_firewall?.apps_detected || 'None'}>
-                                {server.evidence_firewall?.apps_detected || 'None'}
-                            </span>
-                        </div>
-                    </div>
+                    )}
                 </div>
 
                 <div>

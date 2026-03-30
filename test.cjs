@@ -1,0 +1,1077 @@
+const fs = require('fs');
+
+const data = [
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:52.508873Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.92,
+        "decision_rationale": "Sunucu, LDAP ve Kerberos gibi kritik servisler için 25.000'den fazla outbound oturum gerçekleştirmekte olup, tek yönlü yüksek trafik kuralı gereği aktif olarak sınıflandırılır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.5,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 15.45,
+            "mem_usage_max_pct": 60.37,
+            "net_usage_max": 57.32
+        },
+        "evidence_logs": {
+            "total_log_count": 0,
+            "unique_patterns_found": 0,
+            "log_summary": "Splunk kayıtlarında veri bulunmamaktadır, ancak donanım metrikleri ve güvenlik duvarı istatistikleri sunucunun aktif olarak kimlik doğrulama ve e-posta servisleri ile iletişim halinde olduğunu doğrulamaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "25443",
+                "unique_dests": "11",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "KERBEROS",
+                    "LDAP",
+                    "NTP",
+                    "SMTP"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:55.645109Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, 57.000'den fazla outbound oturum ile belirgin dışa doğru ağ trafiği göstermektedir ve ağ topolojisi kuralı gereği tek yönlü yüksek trafik sunucunun aktif olduğunu doğrular.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.8,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 15.26,
+            "mem_usage_max_pct": 64.48,
+            "net_usage_max": 82.47
+        },
+        "evidence_logs": {
+            "total_log_count": 15696,
+            "unique_patterns_found": 5,
+            "log_summary": "Günlükler temel işletim sistemi hizmetlerini ve yönetim ajanlarını yansıtmaktadır ancak firewall istatistikleri sunucunun kullanımda olduğunu kanıtlamaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "57323",
+                "unique_dests": "45",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTP",
+                    "HTTP.BROWSER",
+                    "HTTPS",
+                    "LDAP",
+                    "NTP",
+                    "Proxy.HTTP",
+                    "SMTP",
+                    "TCP_10123",
+                    "TCP_1455",
+                    "TCP_1688",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_8530",
+                    "TCP_9097",
+                    "TCP_9443",
+                    "google-base",
+                    "http-proxy",
+                    "ms-update",
+                    "not-applicable",
+                    "ocsp",
+                    "ssl",
+                    "tcp-high-ports",
+                    "tcp/8080",
+                    "web-browsing"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:57.166355Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, 18.679 outbound oturum ve Kubernetes (k3s) pod yönetimi ile aktif iş yükleri göstermektedir. Topoloji kuralı gereği inbound trafiğin olmaması, outbound trafiğin varlığı nedeniyle aktiflik kriterini etkilemez.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 5.73,
+            "mem_usage_max_pct": 35.6,
+            "net_usage_max": 2313.66
+        },
+        "evidence_logs": {
+            "total_log_count": 1539460,
+            "unique_patterns_found": 22,
+            "log_summary": "Loglar, Kubernetes (k3s) pod yönetimi, hacim işlemleri ve Centrify üzerinden kullanıcı erişim denetimlerini içermektedir. Ayrıca sistem servisleri ve ağ ayarları ile ilgili rutin işlemler de kaydedilmiştir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "18679",
+                "unique_dests": "38",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "SSH",
+                    "TCP_4520",
+                    "TCP_4521",
+                    "TCP_5063",
+                    "TCP_5433",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:57.908459Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, 24.000'den fazla outbound oturum ile belirgin ağ trafiği göstermektedir ve Jira web uygulaması logları iş yükü olduğunu doğrulamaktadır. Topoloji kuralı gereği inbound trafiğin olmaması aktiflik durumunu etkilemez.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.0,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 11.64,
+            "mem_usage_max_pct": 50.49,
+            "net_usage_max": 43.56
+        },
+        "evidence_logs": {
+            "total_log_count": 609155,
+            "unique_patterns_found": 16,
+            "log_summary": "Splunk loglarında Atlassian Jira web uygulaması uyarıları ve kullanıcı oturum açma kayıtları (samanageenginessh) bulunmaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "24459",
+                "unique_dests": "32",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_3320",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:59.330852Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.92,
+        "decision_rationale": "Sunucu, 23.637 oturumlu belirgin Outbound (giden) ağ trafiği sergilemektedir; Topoloji Kuralı gereği tek yönlü aktif trafik sunucunun kullanımda olduğunu kanıtlar ve 0 Inbound durumu cezalandırılmaz.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 6.98,
+            "mem_usage_max_pct": 21.12,
+            "net_usage_max": 40.91
+        },
+        "evidence_logs": {
+            "total_log_count": 1940129,
+            "unique_patterns_found": 18,
+            "log_summary": "Splunk kayıtlarında Centrify (dzdo) ile kullanıcı komut çalıştırma, SSH bağlantı kopmaları ve sistem yönetimi işlemleri gözlemlenmiştir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "23637",
+                "unique_dests": "26",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:59.340255Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Kritik ağ topolojisi kuralı gereği, sıfır inbound olmasına rağmen 24.200 outbound oturum ve %99.7 ağ kullanımı sunucunun aktif olduğunu kanıtlar.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 14.03,
+            "mem_usage_max_pct": 40.71,
+            "net_usage_max": 99.7
+        },
+        "evidence_logs": {
+            "total_log_count": 2345797,
+            "unique_patterns_found": 15,
+            "log_summary": "Splunk kayıtlarında Dynatrace ajanı, Centrify kimlik yönetimi ve belirli kullanıcı hesapları tarafından yürütülen komutlar gibi iş yükü kanıtları bulunmaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "24200",
+                "unique_dests": "31",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_4520",
+                    "TCP_4522",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:27:59.379195Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, MongoDB veritabanı süreçleri ve yedekleme ajanı logları ile aktif iş yükü göstermektedir. Ağ trafiği kurallarına göre yüksek outbound oturumlar (69.095) sunucunun aktif iletişim halinde olduğunu doğrular.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.2,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 13.3,
+            "mem_usage_max_pct": 35.85,
+            "net_usage_max": 92.8
+        },
+        "evidence_logs": {
+            "total_log_count": 410983,
+            "unique_patterns_found": 15,
+            "log_summary": "Loglarda mongod işlemi, pbm-agent yedekleme aktiviteleri ve Centrify tabanlı kullanıcı yönetimi görülmektedir. Firewall çıktısı, sunucunun diğer servislerle (Domain Controller, HTTPS vb.) yoğun iletişim kurduğunu göstermektedir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "69095",
+                "unique_dests": "26",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_8446",
+                    "TCP_9097",
+                    "http_https",
+                    "not-applicable"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:01.038070Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, 12.265 outbound oturum ve %84.2 RAM kullanımı ile belirgin ağ trafiği ve kaynak tüketimi göstermektedir. Topoloji kuralı gereği tek yönlü yüksek trafik bile aktif kullanım kanıtıdır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 2.2,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 26.09,
+            "mem_usage_max_pct": 84.17,
+            "net_usage_max": 61.98
+        },
+        "evidence_logs": {
+            "total_log_count": 12991,
+            "unique_patterns_found": 3,
+            "log_summary": "Günlükler temel sistem yönetimi, güvenlik politikaları ve antivirüs izleme aktivitelerini yansıtmaktadır ancak yüksek kaynak kullanımı ve dışa yönelik ağ trafiği iş yükü olduğunu doğrulamaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "12265",
+                "unique_dests": "32",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTP",
+                    "HTTPS",
+                    "HTTP_and_HTTPS_proxy",
+                    "NTP",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9443",
+                    "http-proxy",
+                    "ms-update",
+                    "not-applicable",
+                    "ocsp",
+                    "ssl",
+                    "tcp-udp_any",
+                    "tcp/8080",
+                    "web-browsing"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:12.451533Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.98,
+        "decision_rationale": "Sunucu, WebLogic uygulama sunucusu olarak çalışmakta ve yüksek miktarda outbound firewall trafiği (49946 oturum) oluşturmaktadır. Ağ topolojisi kuralı gereği inbound trafiğin olmaması, outbound trafiğin varlığı nedeniyle aktif sınıflandırmasını engellemez.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.7,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 32.22,
+            "mem_usage_max_pct": 78.1,
+            "net_usage_max": 277.02
+        },
+        "evidence_logs": {
+            "total_log_count": 818854,
+            "unique_patterns_found": 21,
+            "log_summary": "Splunk loglarında WebLogic çekirdek uyarıları ve /ws/BelgeIslemleriServis gibi iş uygulamalarına ait SOAP servis çağrıları görülmektedir. Ayrıca kullanıcı oturum açma ve komut yürütme kayıtları sistemin aktif kullanımını doğrulamaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "49946",
+                "unique_dests": "33",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_4520",
+                    "TCP_4522",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "ldap-ssl",
+                    "not-applicable",
+                    "ssl",
+                    "tcp-high-ports",
+                    "tcp/8449"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:18.263100Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, 7954 oturum içeren belirgin dışa giden (Outbound) ağ trafiği sergilemekte ve Next.js/Podman gibi iş uygulamalarına ait aktif süreç logları bulunmaktadır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 1.2,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 6.93,
+            "mem_usage_max_pct": 31.17,
+            "net_usage_max": 473.82
+        },
+        "evidence_logs": {
+            "total_log_count": 2268315,
+            "unique_patterns_found": 144,
+            "log_summary": "Splunk kayıtları, Next.js tabanlı bir web uygulaması, konteyner oluşturma işlemleri ve registry worker süreçlerinin aktif olduğunu doğrulamaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "7954",
+                "unique_dests": "56",
+                "apps_detected": [
+                    "DNS",
+                    "HTTP",
+                    "HTTPS",
+                    "NTP",
+                    "SSH",
+                    "TCP_5670",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "dnf",
+                    "github-base",
+                    "http_https",
+                    "ntp-base",
+                    "ssl",
+                    "tcp-udp_any"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:18.710380Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Firewall istatistikleri 21.000'den fazla giden oturum göstererek sunucunun aktif iletişim kurduğunu kanıtlar; gelen trafik olmaması VLAN topolojisinden kaynaklıdır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.2,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 14.5,
+            "mem_usage_max_pct": 64.83,
+            "net_usage_max": 100.19
+        },
+        "evidence_logs": {
+            "total_log_count": 825557,
+            "unique_patterns_found": 15,
+            "log_summary": "Loglar, 'samanageenginessh' ve 'sanexposessh' hesapları ile yapılan SSH oturumları ve Centrify komut çalıştırmaları gibi aktif kullanıcı ve servis etkileşimlerini yansıtmaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "21134",
+                "unique_dests": "26",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "http_https"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:21.040848Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Ağ topolojisi kuralı gereği, giden oturum sayısı (24.118) ve çeşitli uygulama portlarına (LDAP, HTTPS, 8089 vb.) yapılan trafik, sunucunun aktif olduğunu kanıtlamaktadır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 10.26,
+            "mem_usage_max_pct": 54.83,
+            "net_usage_max": 43.56
+        },
+        "evidence_logs": {
+            "total_log_count": 662616,
+            "unique_patterns_found": 16,
+            "log_summary": "Kayıtlar, rutin sistem işlemleri, Centrify kimlik doğrulama ve Dynatrace izleme yazılımı aktivitelerini içermektedir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "24118",
+                "unique_dests": "33",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_4520",
+                    "TCP_4531",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:22.678853Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, hem inbound hem de outbound yönünde yüksek firewall oturum sayısına sahiptir ve WebLogic/BI uygulamasına ait aktif erişim logları içerir.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 14.6,
+            "mem_usage_max_pct": 38.14,
+            "net_usage_max": 101.45
+        },
+        "evidence_logs": {
+            "total_log_count": 966593,
+            "unique_patterns_found": 19,
+            "log_summary": "WebLogic GCMonitor, BI güvenlik giriş istekleri ve Oracle Middleware dosya işlemleri loglarda tespit edilmiştir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "119374",
+                "unique_dests": "45",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTP",
+                    "HTTPS",
+                    "HTTP_and_HTTPS_proxy",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_4520",
+                    "TCP_4521",
+                    "TCP_4522",
+                    "TCP_4524",
+                    "TCP_4531",
+                    "TCP_4533",
+                    "TCP_4562",
+                    "TCP_5063",
+                    "TCP_587",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "google-base",
+                    "http_https",
+                    "ldap-ssl",
+                    "not-applicable",
+                    "tcp/8080",
+                    "web-browsing"
+                ]
+            },
+            "inbound": {
+                "sessions": "47340",
+                "unique_sources": "3",
+                "apps_detected": [
+                    "TCP_7000_10000",
+                    "UDP_111",
+                    "bootp",
+                    "incomplete",
+                    "ssl",
+                    "tcp/9503",
+                    "udp-high-ports",
+                    "udp/443",
+                    "udp/500",
+                    "udp/80"
+                ]
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:25.278111Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu, 129.455 outbound ve 11.514 inbound oturum ile belirgin ağ trafiği sergilemektedir. Ağ trafiği kriteri, düşük CPU kullanımına rağmen sunucunun aktif olarak sınıflandırılmasını gerektirmektedir.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 1.7,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 4.2,
+            "mem_usage_max_pct": 65.3,
+            "net_usage_max": 49.12
+        },
+        "evidence_logs": {
+            "total_log_count": 11897,
+            "unique_patterns_found": 4,
+            "log_summary": "Günlükler temel olarak güvenlik yazılımı (McAfee), PowerShell izleme ve sistem güncellemeleri (Centrify) gibi rutin bakım işlemlerini yansıtmaktadır."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "129455",
+                "unique_dests": "40",
+                "apps_detected": [
+                    "DCE-RPC",
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTP",
+                    "HTTPS",
+                    "Internet-Locator-Service",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "PING",
+                    "SMB",
+                    "TCP_10123",
+                    "TCP_1688",
+                    "TCP_8089",
+                    "TCP_8530",
+                    "TCP_9097",
+                    "active-directory-base",
+                    "dns-base",
+                    "http-proxy",
+                    "incomplete",
+                    "kerberos",
+                    "ldap",
+                    "ms-ds-smbv3",
+                    "ms-kms",
+                    "ms-local-security-management",
+                    "ms-netlogon",
+                    "ms-sms",
+                    "ms-update",
+                    "msrpc-base",
+                    "not-applicable",
+                    "ntp-base",
+                    "ocsp",
+                    "ping",
+                    "splunk",
+                    "ssl",
+                    "tcp-udp_any",
+                    "web-browsing"
+                ]
+            },
+            "inbound": {
+                "sessions": "11514",
+                "unique_sources": "6",
+                "apps_detected": [
+                    "DCE-RPC",
+                    "DHCP",
+                    "IKE",
+                    "MMS",
+                    "SMB",
+                    "canon-bjnp",
+                    "capwap",
+                    "dhcp"
+                ]
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:25.910473Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Firewall'dan gelen oturum 0 olsa da, 23.000'den fazla outbound oturum ve spesifik uygulama portları (8089, 9097 vb.) aktif iş trafiğini göstermektedir. Topoloji kuralı gereği tek yönlü yüksek trafik aktif kabul edilir.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 12.9,
+            "mem_usage_max_pct": 50.4,
+            "net_usage_max": 42.53
+        },
+        "evidence_logs": {
+            "total_log_count": 687145,
+            "unique_patterns_found": 16,
+            "log_summary": "Splunk loglarında 'cbc-krs-fatura-ws' web servisi aktiviteleri, Active Directory kimlik doğrulama kayıtları ve servis hesapları tarafından gerçekleştirilen komut çalıştırmaları gözlemlenmiştir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "23727",
+                "unique_dests": "37",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_4520",
+                    "TCP_4531",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:27.697553Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Ağ topolojisi kuralı gereği, giden yönde 26.757 oturum gibi önemli miktarda trafik tespit edilmiştir ve bu durum sunucunun aktif olduğunu kanıtlar.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 12.44,
+            "mem_usage_max_pct": 50.46,
+            "net_usage_max": 39.86
+        },
+        "evidence_logs": {
+            "total_log_count": 661585,
+            "unique_patterns_found": 17,
+            "log_summary": "Splunk kayıtlarında Centrify (dzdo) ile kullanıcı komut çalıştırmaları, SSH bağlantıları ve sistem audit işlemleri aktif kullanım göstermektedir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "26757",
+                "unique_dests": "33",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_4520",
+                    "TCP_4531",
+                    "TCP_4577",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:31.899705Z",
+        "ai_classification": "ZOMBIE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Donanım metrikleri (CPU, RAM, Ağ) çok düşük seviyededir ve firewall üzerinde herhangi bir trafik kaydı bulunmamaktadır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.0,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 1.47,
+            "mem_usage_max_pct": 12.36,
+            "net_usage_max": 0.95
+        },
+        "evidence_logs": {
+            "total_log_count": 0,
+            "unique_patterns_found": 0,
+            "log_summary": "Splunk sorgusu herhangi bir log kaydı döndürmemiş olup, sunucunun son 168 saat boyunca aktif bir işlem gerçekleştirdiğine dair kanıt yoktur."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": 0,
+                "unique_dests": 0,
+                "apps_detected": "None"
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:35.534489Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Ağ topolojisi kuralı gereği, 0 gelen oturum olmasına rağmen 24.321 adet önemli dışa giden oturum (LDAP, HTTPS, SMTP vb.) aktif kullanım kanıtıdır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 10.39,
+            "mem_usage_max_pct": 51.65,
+            "net_usage_max": 45.97
+        },
+        "evidence_logs": {
+            "total_log_count": 641381,
+            "unique_patterns_found": 15,
+            "log_summary": "Splunk kayıtlarında uygulama seviyesinde güvenlik uyarıları, SSH bağlantı kopmaları ve servis hesapları tarafından yürütülen komutlar gözlemlenmiştir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "24321",
+                "unique_dests": "42",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "SMTP",
+                    "TCP_4520",
+                    "TCP_4531",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "TCP_9999",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:36.592619Z",
+        "ai_classification": "ACTIVE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Firewall verileri 795.000'den fazla outbound oturum kaydetmiş olup, ağ topolojisi kuralı gereği tek yönlü yüksek trafik sunucunun aktif olduğunu kanıtlar. Ayrıca etcd servisleri ve saucmdb kullanıcısı tarafından gerçekleştirilen yetkilendirme işlemleri, sunucunun iş yükü altında çalıştığını göstermektedir.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.1,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 13.14,
+            "mem_usage_max_pct": 45.95,
+            "net_usage_max": 39.32
+        },
+        "evidence_logs": {
+            "total_log_count": 509241,
+            "unique_patterns_found": 17,
+            "log_summary": "Splunk kayıtları, etcd düğüm iletişimi, dnf paket yönetimi ve Centrify (adclient/dzdo) üzerinden kullanıcı yetkilendirme aktivitelerini içermektedir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": "795294",
+                "unique_dests": "31",
+                "apps_detected": [
+                    "DNS",
+                    "Domain_Controller_Ports",
+                    "HTTPS",
+                    "KERBEROS",
+                    "LDAP",
+                    "LDAP_UDP",
+                    "NTP",
+                    "TCP_2379-2380",
+                    "TCP_5063",
+                    "TCP_8089",
+                    "TCP_9097",
+                    "http_https",
+                    "not-applicable",
+                    "tcp-high-ports"
+                ]
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:44.748525Z",
+        "ai_classification": "ZOMBIE",
+        "confidence_score": 0.95,
+        "decision_rationale": "Sunucu CPU kullanımı çok düşük (1.8%) ve firewall üzerinde herhangi bir trafik kaydı bulunmamaktadır. Ayrıca Splunk loglarında veri olmaması, sunucunun aktif bir iş yükü taşımadığını göstermektedir.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 0.0,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 1.8,
+            "mem_usage_max_pct": 24.67,
+            "net_usage_max": 43.94
+        },
+        "evidence_logs": {
+            "total_log_count": 0,
+            "unique_patterns_found": 0,
+            "log_summary": "Log kayıtları mevcut değildir, bu da sunucunun son 24 saatte herhangi bir sistem veya uygulama etkinliği üretmediğini işaret etmektedir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": 0,
+                "unique_dests": 0,
+                "apps_detected": "None"
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    },
+    {
+        "server_name": "",
+        "analysis_timestamp": "2026-03-30T11:28:46.825189Z",
+        "ai_classification": "ZOMBIE",
+        "confidence_score": 0.85,
+        "decision_rationale": "Sunucu üzerinde iş yükü göstergesi olan firewall trafiği veya uygulama logları bulunmamaktadır; CPU kullanımı izleme araçları (Splunk, Cybereason) kaynaklıdır.",
+        "ai_anomaly_scores": {
+            "lstm_temporal_anomaly_score": 1.6,
+            "peer_comparison_anomaly_score": 0.0
+        },
+        "evidence_metrics": {
+            "time_window_hours": 168,
+            "cpu_usage_max_pct": 47.27,
+            "mem_usage_max_pct": 31.56,
+            "net_usage_max": 11.82
+        },
+        "evidence_logs": {
+            "total_log_count": 8430,
+            "unique_patterns_found": 4,
+            "log_summary": "Splunk ve Cybereason izleme süreçleri ile PowerShell ve Windows güncelleme olayları dışında işlevsel uygulama trafiği kaydedilmemiştir."
+        },
+        "evidence_firewall": {
+            "outbound": {
+                "sessions": 0,
+                "unique_dests": 0,
+                "apps_detected": "None"
+            },
+            "inbound": {
+                "sessions": 0,
+                "unique_sources": 0,
+                "apps_detected": "None"
+            }
+        }
+    }
+];
+
+let counter = 1;
+const fixedData = data.map(item => {
+    // 1. Assign random server name based on active/zombie
+    const prefix = item.ai_classification === "ACTIVE" ? "PROD" : "DEV";
+    item.server_name = `TR-IST-${prefix}-${String(counter++).padStart(2, '0')}`;
+    return item;
+});
+
+fs.writeFileSync('public/data.json', JSON.stringify(fixedData, null, 2));
+console.log("Data fixed and saved to public/data.json.");
