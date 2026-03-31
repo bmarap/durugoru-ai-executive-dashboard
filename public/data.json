@@ -2,8 +2,8 @@
   {
     "server_name": "TR-IST-PROD-01",
     "analysis_timestamp": "2026-03-30T11:27:52.508873Z",
-    "ai_classification": "ACTIVE",
-    "confidence_score": 0.92,
+    "ai_classification": "SUSPECT",
+    "confidence_score": 0.85,
     "decision_rationale": "Sunucu, LDAP ve Kerberos gibi kritik servisler için 25.000'den fazla outbound oturum gerçekleştirmekte olup, tek yönlü yüksek trafik kuralı gereği aktif olarak sınıflandırılır.",
     "ai_anomaly_scores": {
       "lstm_temporal_anomaly_score": 0.5,

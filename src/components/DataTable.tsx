@@ -126,6 +126,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                         <option value="ALL">All Status</option>
                         <option value="ACTIVE">Active</option>
                         <option value="ZOMBIE">Zombie</option>
+                        <option value="SUSPECT">Suspect</option>
                     </select>
                 </div>
             </div>
@@ -180,6 +181,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                         {filteredData.map((server) => {
                             const isExpanded = expandedRows.has(server.server_name);
                             const isZombie = server.ai_classification === 'ZOMBIE';
+                            const isSuspect = server.ai_classification === 'SUSPECT';
                             const confPct = Math.round(server.confidence_score * 100);
 
                             return (
@@ -197,7 +199,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${isZombie ? 'bg-brand-orange/10 text-brand-orange border-brand-orange/20' : 'bg-brand-cyan/10 text-brand-cyan border-brand-cyan/20'}`}>
+                                            <span className={`px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${isZombie ? 'bg-brand-orange/10 text-brand-orange border-brand-orange/20' : isSuspect ? 'bg-brand-yellow/10 text-brand-yellow border-brand-yellow/20' : 'bg-brand-cyan/10 text-brand-cyan border-brand-cyan/20'}`}>
                                                 {server.ai_classification}
                                             </span>
                                         </td>
@@ -206,7 +208,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                                 <span className="text-sm text-brand-silver mr-2 w-8">{confPct}%</span>
                                                 <div className="w-full bg-black/40 rounded-full h-1.5 border border-white/5">
                                                     <div
-                                                        className={`h-1.5 rounded-full ${isZombie ? 'bg-brand-orange' : 'bg-brand-cyan'}`}
+                                                        className={`h-1.5 rounded-full ${isZombie ? 'bg-brand-orange' : isSuspect ? 'bg-brand-yellow' : 'bg-brand-cyan'}`}
                                                         style={{ width: `${confPct}%` }}
                                                     ></div>
                                                 </div>
