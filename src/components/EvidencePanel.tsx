@@ -9,6 +9,22 @@ const renderApps = (apps: any) => {
     return Array.isArray(apps) ? apps.join(", ") : String(apps);
 };
 
+const renderPortsList = (portsString: any) => {
+    if (!portsString || portsString === "None" || portsString === "NO_DATA") {
+        return <span className="text-brand-silver font-mono text-[10px]">{portsString || "None"}</span>;
+    }
+    const ports = String(portsString).split(',').map(p => p.trim()).filter(Boolean);
+    return (
+        <div className="flex flex-wrap gap-1.5 mt-1">
+            {ports.map((p, idx) => (
+                <span key={idx} className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-brand-cyan/10 text-brand-cyan border border-brand-cyan/20 whitespace-nowrap">
+                    {p}
+                </span>
+            ))}
+        </div>
+    );
+};
+
 export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
     return (
         <div className="bg-black/20 border-x border-b border-panel-border p-6 shadow-inner text-sm animate-in fade-in slide-in-from-top-2 duration-200">
@@ -242,10 +258,8 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                                     </span>
                                 </div>
                                 <div>
-                                    <span className="text-brand-slate text-xs block mb-1">Ports</span>
-                                    <div className="text-[10px] text-brand-silver bg-black/30 border border-panel-border p-2 rounded whitespace-pre-wrap font-mono max-h-24 overflow-y-auto leading-relaxed">
-                                        {server.evidence_aria_vds?.outbound_ports ?? "None"}
-                                    </div>
+                                    <span className="text-brand-slate text-xs block">Ports</span>
+                                    {renderPortsList(server.evidence_aria_vds?.outbound_ports)}
                                 </div>
                             </div>
                         </div>
@@ -263,10 +277,8 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                                     </span>
                                 </div>
                                 <div>
-                                    <span className="text-brand-slate text-xs block mb-1">Ports</span>
-                                    <div className="text-[10px] text-brand-silver bg-black/30 border border-panel-border p-2 rounded whitespace-pre-wrap font-mono max-h-24 overflow-y-auto leading-relaxed">
-                                        {server.evidence_aria_vds?.inbound_ports ?? "None"}
-                                    </div>
+                                    <span className="text-brand-slate text-xs block">Ports</span>
+                                    {renderPortsList(server.evidence_aria_vds?.inbound_ports)}
                                 </div>
                             </div>
                         </div>
