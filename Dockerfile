@@ -22,10 +22,8 @@ FROM node:20-alpine
 # Install Nginx
 RUN apk add --no-cache nginx
 
-# Copy Nginx config
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-# Remove the default Nginx config that listens on port 80 to avoid conflicts
-RUN rm -f /etc/nginx/http.d/default.conf
+# Copy Nginx config (Alpine uses /etc/nginx/http.d/ for server blocks)
+COPY nginx.conf /etc/nginx/http.d/default.conf
 
 # Copy the built frontend assets
 COPY --from=builder /app/dist /usr/share/nginx/html
