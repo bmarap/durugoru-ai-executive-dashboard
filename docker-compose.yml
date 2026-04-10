@@ -1,9 +1,5 @@
 version: '3.8'
 
-networks:
-  app-net:
-    driver: bridge
-
 services:
   dashboard:
     build: .
@@ -13,16 +9,4 @@ services:
       # Map a local data.json into the container's static html root
       # Replace ./local-data-folder/data.json with the path to your actual JSON file
       - ./data.json:/usr/share/nginx/html/data.json:ro
-    depends_on:
-      - api
-    networks:
-      - app-net
-
-  api:
-    build: ./api
-    networks:
-      - app-net
-    ports:
-      - "3001:3001"
-    volumes:
-      - ./api/user_feedback.json:/app/user_feedback.json
+      - ./api/user_feedback.json:/api/user_feedback.json

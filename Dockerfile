@@ -1,4 +1,4 @@
-# Build stage
+# Build stage - Frontend
 FROM node:20-alpine AS builder
 
 WORKDIR /app
@@ -16,19 +16,29 @@ COPY . .
 RUN npm run build
 
 
-# Production stage
-FROM nginx:alpine
+# Production stage - Nginx + Node API in one container
+FROM node:20-alpine
 
+# Install Nginx
+RUN apk add --no-cache nginx
+
+# Copy Nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Remove the default Nginx config that listens on port 80 to avoid conflicts
+RUN rm -f /etc/nginx/http.d/default.conf
 
-# Copy the built assets to Nginx's default directory
+# Copy the built frontend assets
 COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Copy a custom Nginx config if needed (optional, but good for SPAs)
-# In our case we use hash router or simple paths, so default Nginx is usually fine.
-# We'll stick to default for a simple SPA. If React Router were used with History API, 
-# we'd need a custom nginx.conf to redirect 404s to index.html.
+# Copy the API source
+COPY api/package*.json /api/
+RUN cd /api && npm install --omit=dev
+COPY api/server.js /api/server.js
+
+# Copy the startup script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/start.sh"]
