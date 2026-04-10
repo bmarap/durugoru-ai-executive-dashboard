@@ -2,6 +2,7 @@ import React from "react";
 
 interface EvidencePanelProps {
     server: any;
+    onMarkFalsePositive?: (serverName: string) => void;
 }
 
 const renderApps = (apps: any) => {
@@ -25,23 +26,36 @@ const renderPortsList = (portsString: any) => {
     );
 };
 
-export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
+export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server, onMarkFalsePositive }) => {
     return (
         <div className="bg-black/20 border-x border-b border-panel-border p-6 shadow-inner text-sm animate-in fade-in slide-in-from-top-2 duration-200">
             <div className="flex justify-between items-center mb-4">
                 <h4 className="text-white font-semibold uppercase tracking-wider text-xs">
                     Section A: AI Reasoning
                 </h4>
-                <div className="flex items-center gap-2">
-                    <span className="text-xs text-brand-slate uppercase tracking-wider font-semibold">
-                        Analysis Timestamp:
-                    </span>
-                    <span className="text-xs text-brand-silver font-mono bg-black/40 px-2 py-1 rounded border border-panel-border">
-                        {new Date(server.analysis_timestamp).toLocaleString("en-US", {
-                            dateStyle: "medium",
-                            timeStyle: "short",
-                        })}
-                    </span>
+                <div className="flex items-center gap-3">
+                    {(server.ai_classification === 'ZOMBIE' || server.ai_classification === 'SUSPECT') && onMarkFalsePositive && (
+                        <button 
+                            onClick={(e) => { 
+                                e.stopPropagation(); 
+                                onMarkFalsePositive(server.server_name); 
+                            }}
+                            className="bg-brand-slate/10 hover:bg-brand-orange/20 text-brand-silver hover:text-brand-orange border border-panel-border hover:border-brand-orange/50 transition-colors px-3 py-1 rounded text-xs font-semibold flex items-center gap-1"
+                        >
+                            Mark False Positive
+                        </button>
+                    )}
+                    <div className="flex items-center gap-2">
+                        <span className="text-xs text-brand-slate uppercase tracking-wider font-semibold">
+                            Analysis Timestamp:
+                        </span>
+                        <span className="text-xs text-brand-silver font-mono bg-black/40 px-2 py-1 rounded border border-panel-border">
+                            {new Date(server.analysis_timestamp).toLocaleString("en-US", {
+                                dateStyle: "medium",
+                                timeStyle: "short",
+                            })}
+                        </span>
+                    </div>
                 </div>
             </div>
             <div className="mb-6">

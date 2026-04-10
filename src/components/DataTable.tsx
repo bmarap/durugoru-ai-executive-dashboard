@@ -4,6 +4,8 @@ import { EvidencePanel } from './EvidencePanel';
 
 interface DataTableProps {
     data: any[];
+    onMarkFalsePositive?: (serverName: string) => void;
+    feedbackMap?: Record<string, string>;
 }
 
 const getFirewallAppsString = (firewall: any) => {
@@ -26,7 +28,7 @@ const getFirewallAppsString = (firewall: any) => {
     return combined || 'None';
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ data }) => {
+export const DataTable: React.FC<DataTableProps> = ({ data, onMarkFalsePositive, feedbackMap }) => {
     const [search, setSearch] = useState('');
     const [filterStatus, setFilterStatus] = useState<string>('ALL');
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
@@ -194,8 +196,16 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                             {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="flex items-center">
+                                            <div className="flex items-center gap-2">
                                                 <div className="text-sm font-medium text-white">{server.server_name}</div>
+                                                {feedbackMap && feedbackMap[server.server_name] && (
+                                                    <span 
+                                                        className="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30" 
+                                                        title={feedbackMap[server.server_name]}
+                                                    >
+                                                        FALSE POSITIVE
+                                                    </span>
+                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -227,7 +237,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data }) => {
                                     {isExpanded && (
                                         <tr>
                                             <td colSpan={7} className="p-0">
-                                                <EvidencePanel server={server} />
+                                                <EvidencePanel server={server} onMarkFalsePositive={onMarkFalsePositive} />
                                             </td>
                                         </tr>
                                     )}

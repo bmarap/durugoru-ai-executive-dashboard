@@ -2,11 +2,30 @@ import { useState, useEffect } from 'react';
 import { KPICards } from './components/KPICards';
 import { DataTable } from './components/DataTable';
 import { ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { FeedbackModal } from './components/FeedbackModal';
+import { FeedbackItem } from './types/feedback';
 
 function App() {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [activeTab, setActiveTab] = useState<'overview' | 'false_positives'>('overview');
+  const [feedbackData, setFeedbackData] = useState<FeedbackItem[]>([]);
+  const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
+  const [activeServerForFeedback, setActiveServerForFeedback] = useState<string | null>(null);
+
+  const fetchFeedback = async () => {
+    try {
+      const res = await fetch('http://localhost:3001/api/feedback');
+      if (res.ok) {
+        const json = await res.json();
+        setFeedbackData(json);
+      }
+    } catch (err) {
+      console.warn('Failed to fetch feedback data. Ensure API is running.', err);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,26 +46,68 @@ function App() {
     };
 
     fetchData();
+    fetchFeedback();
   }, []);
+
+  const handleFeedbackSubmit = async (reason: string) => {
+    if (!activeServerForFeedback) return;
+    const res = await fetch('http://localhost:3001/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ server_name: activeServerForFeedback, reason })
+    });
+    if (!res.ok) throw new Error('Failed to submit feedback API');
+    await fetchFeedback();
+  };
+
+  const feedbackMap = feedbackData.reduce((acc, curr) => {
+    acc[curr.server_name] = curr.reason;
+    return acc;
+  }, {} as Record<string, string>);
+
+  const displayData = activeTab === 'overview' 
+    ? data 
+    : data.filter(d => feedbackMap[d.server_name]);
   return (
     <div className="min-h-screen bg-brand-navy p-4 md:p-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-6">
 
-        <header className="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-panel-border">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <div className="bg-brand-orange/20 p-2 rounded-lg">
-                <ShieldCheck className="h-8 w-8 text-brand-orange" />
+        <header className="flex flex-col pb-6 border-b border-panel-border">
+          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="bg-brand-orange/20 p-2 rounded-lg">
+                  <ShieldCheck className="h-8 w-8 text-brand-orange" />
+                </div>
+                <h1 className="text-3xl font-bold text-white transform transition-all duration-300 hover:scale-105 origin-left">
+                  Durugörü AI
+                </h1>
               </div>
-              <h1 className="text-3xl font-bold text-white transform transition-all duration-300 hover:scale-105 origin-left">
-                Durugörü AI
-              </h1>
+              <p className="text-brand-silver text-sm">
+                Executive Infrastructure Dashboard &bull; AI-Powered Anomaly Detection
+              </p>
             </div>
-            <p className="text-brand-silver text-sm">
-              Executive Infrastructure Dashboard &bull; AI-Powered Anomaly Detection
-            </p>
           </div>
-
+          
+          <div className="flex gap-6 mt-2">
+            <button 
+              onClick={() => setActiveTab('overview')} 
+              className={`pb-2 text-sm font-medium transition-colors ${activeTab === 'overview' ? 'text-brand-cyan border-b-2 border-brand-cyan' : 'text-brand-slate hover:text-brand-silver'}`}
+            >
+              Infrastructure Overview
+            </button>
+            <button 
+              onClick={() => setActiveTab('false_positives')} 
+              className={`pb-2 text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'false_positives' ? 'text-brand-cyan border-b-2 border-brand-cyan' : 'text-brand-slate hover:text-brand-silver'}`}
+            >
+              False Positives 
+              {feedbackData.length > 0 && (
+                <span className="bg-brand-cyan/20 text-brand-cyan py-0.5 px-2 rounded-full text-[10px]">
+                  {feedbackData.length}
+                </span>
+              )}
+            </button>
+          </div>
         </header>
 
         <main>
@@ -69,16 +130,31 @@ function App() {
             </div>
           ) : (
             <>
-              <section aria-label="Key Performance Indicators">
-                <KPICards data={data} />
-              </section>
+              {activeTab === 'overview' && (
+                <section aria-label="Key Performance Indicators">
+                  <KPICards data={data} />
+                </section>
+              )}
 
               <section aria-label="Server Audit Data">
                 <div className="mb-4">
-                  <h2 className="text-xl font-semibold text-white">Infrastructure Overview</h2>
-                  <p className="text-sm text-brand-silver">Click on any server row to view the full AI Evidence Trail.</p>
+                  <h2 className="text-xl font-semibold text-white">
+                    {activeTab === 'overview' ? 'Infrastructure Overview' : 'Flagged False Positives'}
+                  </h2>
+                  <p className="text-sm text-brand-silver">
+                    {activeTab === 'overview' 
+                      ? 'Click on any server row to view the full AI Evidence Trail.' 
+                      : 'These servers have been manually flagged as false positives by the operations team.'}
+                  </p>
                 </div>
-                <DataTable data={data} />
+                <DataTable 
+                  data={displayData} 
+                  feedbackMap={feedbackMap}
+                  onMarkFalsePositive={(serverName) => {
+                    setActiveServerForFeedback(serverName);
+                    setIsFeedbackModalOpen(true);
+                  }}
+                />
               </section>
             </>
           )}
@@ -89,6 +165,12 @@ function App() {
         </footer>
 
       </div>
+      <FeedbackModal 
+        isOpen={isFeedbackModalOpen}
+        serverName={activeServerForFeedback}
+        onClose={() => setIsFeedbackModalOpen(false)}
+        onSubmit={handleFeedbackSubmit}
+      />
     </div>
   );
 }
