@@ -15,9 +15,11 @@ function App() {
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [activeServerForFeedback, setActiveServerForFeedback] = useState<string | null>(null);
 
+  const API_URL = `${window.location.protocol}//${window.location.hostname}:3001/api/feedback`;
+
   const fetchFeedback = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/feedback');
+      const res = await fetch(API_URL);
       if (res.ok) {
         const json = await res.json();
         setFeedbackData(json);
@@ -51,7 +53,7 @@ function App() {
 
   const handleFeedbackSubmit = async (reason: string) => {
     if (!activeServerForFeedback) return;
-    const res = await fetch('http://localhost:3001/api/feedback', {
+    const res = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ server_name: activeServerForFeedback, reason })
