@@ -3,7 +3,7 @@ import { KPICards } from './components/KPICards';
 import { DataTable } from './components/DataTable';
 import { ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
 import { FeedbackModal } from './components/FeedbackModal';
-import { FeedbackItem } from './types/feedback';
+import type { FeedbackItem } from './types/feedback';
 
 function App() {
   const [data, setData] = useState<any[]>([]);
