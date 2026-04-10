@@ -15,7 +15,7 @@ function App() {
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [activeServerForFeedback, setActiveServerForFeedback] = useState<string | null>(null);
 
-  const API_URL = `${window.location.protocol}//${window.location.hostname}:3001/api/feedback`;
+  const API_URL = '/api/feedback';
 
   const fetchFeedback = async () => {
     try {

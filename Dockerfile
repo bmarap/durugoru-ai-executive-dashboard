@@ -19,6 +19,8 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Copy the built assets to Nginx's default directory
 COPY --from=builder /app/dist /usr/share/nginx/html
 
