@@ -38,6 +38,12 @@
         "unique_sources": 0,
         "apps_detected": "None"
       }
+    },
+    "evidence_aria_vds": {
+      "inbound_mb": 55237.34,
+      "inbound_ports": "Port 8443: 54280.06 MB, Port 8777: 111.3 MB, Port 10443: 0.35 MB, Port 22: 20.43 MB, Port 3306: 0.0 MB, Port 8080: 0.0 MB, Port 9443: 825.19 MB, Port 1433: 0.0 MB, Port 1521: 0.0 MB, Port 1830: 0.0 MB",
+      "outbound_mb": 132461.96,
+      "outbound_ports": "Port 123: 0.05 MB, Port 443: 66630.99 MB, Port 8443: 882.16 MB, Port 9093: 57137.27 MB, Port 444: 13.5 MB, Port 4443: 113.97 MB, Port 53: 12.52 MB, Port 9999: 7652.39 MB, Port 10213: 19.11 MB, Port 10220: 0.01 MB"
     }
   },
   {

@@ -234,21 +234,18 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                             <h5 className="text-brand-slate text-xs uppercase mb-2">
                                 Outbound
                             </h5>
-                            <div className="space-y-1">
-                                <div className="flex justify-between">
-                                    <span className="text-brand-slate text-xs">Traffic (MB)</span>
-                                    <span className="text-brand-silver font-mono text-xs">
-                                        {server.evidence_aria_vds?.outbound_mb ?? "NO_DATA"}
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-xs">
+                                    <span className="text-brand-slate">Traffic</span>
+                                    <span className="text-brand-silver font-mono">
+                                        {server.evidence_aria_vds?.outbound_mb != null ? `${server.evidence_aria_vds.outbound_mb} MB` : "NO_DATA"}
                                     </span>
                                 </div>
-                                <div className="flex justify-between border-t border-panel-border/50 pt-1 mt-1">
-                                    <span className="text-brand-slate text-xs">Ports</span>
-                                    <span
-                                        className="text-brand-silver truncate ml-2 text-xs"
-                                        title={server.evidence_aria_vds?.outbound_ports ?? "None"}
-                                    >
+                                <div>
+                                    <span className="text-brand-slate text-xs block mb-1">Ports</span>
+                                    <div className="text-[10px] text-brand-silver bg-black/30 border border-panel-border p-2 rounded whitespace-pre-wrap font-mono max-h-24 overflow-y-auto leading-relaxed">
                                         {server.evidence_aria_vds?.outbound_ports ?? "None"}
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -258,21 +255,18 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server }) => {
                             <h5 className="text-brand-slate text-xs uppercase mb-2">
                                 Inbound
                             </h5>
-                            <div className="space-y-1">
-                                <div className="flex justify-between">
-                                    <span className="text-brand-slate text-xs">Traffic (MB)</span>
-                                    <span className="text-brand-silver font-mono text-xs">
-                                        {server.evidence_aria_vds?.inbound_mb ?? "NO_DATA"}
+                            <div className="space-y-2">
+                                <div className="flex justify-between text-xs">
+                                    <span className="text-brand-slate">Traffic</span>
+                                    <span className="text-brand-silver font-mono">
+                                        {server.evidence_aria_vds?.inbound_mb != null ? `${server.evidence_aria_vds.inbound_mb} MB` : "NO_DATA"}
                                     </span>
                                 </div>
-                                <div className="flex justify-between border-t border-panel-border/50 pt-1 mt-1">
-                                    <span className="text-brand-slate text-xs">Ports</span>
-                                    <span
-                                        className="text-brand-silver truncate ml-2 text-xs"
-                                        title={server.evidence_aria_vds?.inbound_ports ?? "None"}
-                                    >
+                                <div>
+                                    <span className="text-brand-slate text-xs block mb-1">Ports</span>
+                                    <div className="text-[10px] text-brand-silver bg-black/30 border border-panel-border p-2 rounded whitespace-pre-wrap font-mono max-h-24 overflow-y-auto leading-relaxed">
                                         {server.evidence_aria_vds?.inbound_ports ?? "None"}
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
