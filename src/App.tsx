@@ -79,7 +79,10 @@ function App() {
         setActiveTab('overview');
         setFilterStatus(type === 'TOTAL' ? 'ALL' : type);
     }
-    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    // Defer perfectly to allow React render cycle to catch up, then scroll dynamically to the table start
+    setTimeout(() => {
+        document.getElementById('data-table-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
   };
 
   return (
@@ -150,7 +153,7 @@ function App() {
                 </section>
               )}
 
-              <section aria-label="Server Audit Data">
+              <section id="data-table-section" aria-label="Server Audit Data">
                 <div className="mb-4">
                   <h2 className="text-xl font-semibold text-white">
                     {activeTab === 'overview' ? 'Infrastructure Overview' : 'Postponed Servers'}
