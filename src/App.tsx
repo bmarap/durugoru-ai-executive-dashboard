@@ -134,7 +134,7 @@ function App() {
             <>
               {activeTab === 'overview' && (
                 <section aria-label="Key Performance Indicators">
-                  <KPICards data={data} />
+                  <KPICards data={data} postponedCount={feedbackData.length} />
                 </section>
               )}
 
