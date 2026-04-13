@@ -42,7 +42,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({ server, onMarkFals
                             }}
                             className="bg-brand-slate/10 hover:bg-brand-orange/20 text-brand-silver hover:text-brand-orange border border-panel-border hover:border-brand-orange/50 transition-colors px-3 py-1 rounded text-xs font-semibold flex items-center gap-1"
                         >
-                            Mark False Positive
+                            Postpone
                         </button>
                     )}
                     <div className="flex items-center gap-2">

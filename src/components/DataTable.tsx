@@ -203,7 +203,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data, onMarkFalsePositive,
                                                         className="px-2 py-0.5 rounded text-[10px] font-bold bg-brand-cyan/20 text-brand-cyan border border-brand-cyan/30" 
                                                         title={feedbackMap[server.server_name]}
                                                     >
-                                                        FALSE POSITIVE
+                                                        POSTPONED
                                                     </span>
                                                 )}
                                             </div>

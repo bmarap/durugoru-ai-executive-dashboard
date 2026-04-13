@@ -50,7 +50,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, serverName
             <div className="bg-panel-bg border border-panel-border rounded-lg shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                 <div className="flex justify-between items-center p-4 border-b border-panel-border bg-black/20">
                     <h3 className="text-white font-semibold flex items-center gap-2">
-                        Mark False Positive
+                        Postpone Server
                     </h3>
                     <button 
                         onClick={onClose}
@@ -73,7 +73,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, serverName
                     
                     <div className="mb-6">
                         <label htmlFor="reason" className="block text-sm font-medium text-brand-slate mb-1">
-                            Reason for False Positive <span className="text-brand-orange">*</span>
+                            Reason for Postponing <span className="text-brand-orange">*</span>
                         </label>
                         <textarea
                             id="reason"

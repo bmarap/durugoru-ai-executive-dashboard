@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { KPICards } from './components/KPICards';
 import { DataTable } from './components/DataTable';
-import { ShieldCheck, AlertCircle, Loader2 } from 'lucide-react';
+import { Gauge, AlertCircle, Loader2 } from 'lucide-react';
 import { FeedbackModal } from './components/FeedbackModal';
 import type { FeedbackItem } from './types/feedback';
 
@@ -10,7 +10,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'false_positives'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'postponed'>('overview');
   const [feedbackData, setFeedbackData] = useState<FeedbackItem[]>([]);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [activeServerForFeedback, setActiveServerForFeedback] = useState<string | null>(null);
@@ -79,10 +79,10 @@ function App() {
             <div>
               <div className="flex items-center gap-3 mb-2">
                 <div className="bg-brand-orange/20 p-2 rounded-lg">
-                  <ShieldCheck className="h-8 w-8 text-brand-orange" />
+                  <Gauge className="h-8 w-8 text-brand-orange" />
                 </div>
                 <h1 className="text-3xl font-bold text-white transform transition-all duration-300 hover:scale-105 origin-left">
-                  Durugörü AI
+                  Durugörü Efficiency
                 </h1>
               </div>
               <p className="text-brand-silver text-sm">
@@ -99,10 +99,10 @@ function App() {
               Infrastructure Overview
             </button>
             <button 
-              onClick={() => setActiveTab('false_positives')} 
-              className={`pb-2 text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'false_positives' ? 'text-brand-cyan border-b-2 border-brand-cyan' : 'text-brand-slate hover:text-brand-silver'}`}
+              onClick={() => setActiveTab('postponed')} 
+              className={`pb-2 text-sm font-medium transition-colors flex items-center gap-2 ${activeTab === 'postponed' ? 'text-brand-cyan border-b-2 border-brand-cyan' : 'text-brand-slate hover:text-brand-silver'}`}
             >
-              False Positives 
+              Postponed 
               {feedbackData.length > 0 && (
                 <span className="bg-brand-cyan/20 text-brand-cyan py-0.5 px-2 rounded-full text-[10px]">
                   {feedbackData.length}
@@ -141,12 +141,12 @@ function App() {
               <section aria-label="Server Audit Data">
                 <div className="mb-4">
                   <h2 className="text-xl font-semibold text-white">
-                    {activeTab === 'overview' ? 'Infrastructure Overview' : 'Flagged False Positives'}
+                    {activeTab === 'overview' ? 'Infrastructure Overview' : 'Postponed Servers'}
                   </h2>
                   <p className="text-sm text-brand-silver">
                     {activeTab === 'overview' 
                       ? 'Click on any server row to view the full AI Evidence Trail.' 
-                      : 'These servers have been manually flagged as false positives by the operations team.'}
+                      : 'These servers have been manually postponed by the operations team.'}
                   </p>
                 </div>
                 <DataTable 
@@ -163,7 +163,7 @@ function App() {
         </main>
 
         <footer className="pt-8 pb-4 text-center text-xs text-brand-slate">
-          <p>&copy; 2026 Durugörü AI Platform. Confidential & Proprietary.</p>
+          <p>&copy; 2026 Durugörü Efficiency Platform. Confidential & Proprietary.</p>
         </footer>
 
       </div>
