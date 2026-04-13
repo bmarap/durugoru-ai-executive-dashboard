@@ -4,9 +4,10 @@ import { Server, Activity, Ghost, Percent, AlertTriangle, Clock } from 'lucide-r
 interface KPICardsProps {
     data: any[];
     postponedCount?: number;
+    onCardClick?: (type: string) => void;
 }
 
-export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0 }) => {
+export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0, onCardClick }) => {
     const totalServers = data.length;
     const zombies = data.filter(d => d.ai_classification === 'ZOMBIE');
     const actives = data.filter(d => d.ai_classification === 'ACTIVE');
@@ -18,7 +19,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0 }) 
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
-            <div className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg">
+            <div 
+                onClick={() => onCardClick?.('TOTAL')}
+                className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            >
                 <div>
                     <p className="text-sm text-brand-silver font-medium mb-1">Total Servers Analyzed</p>
                     <p className="text-3xl font-bold text-white">{totalServers}</p>
@@ -28,7 +32,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0 }) 
                 </div>
             </div>
 
-            <div className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg">
+            <div 
+                onClick={() => onCardClick?.('ZOMBIE')}
+                className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            >
                 <div>
                     <p className="text-sm text-brand-silver font-medium mb-1">Zombies Detected</p>
                     <p className="text-3xl font-bold text-brand-orange">{zombies.length}</p>
@@ -38,7 +45,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0 }) 
                 </div>
             </div>
 
-            <div className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg">
+            <div 
+                onClick={() => onCardClick?.('ACTIVE')}
+                className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            >
                 <div>
                     <p className="text-sm text-brand-silver font-medium mb-1">Active Servers</p>
                     <p className="text-3xl font-bold text-brand-cyan">{actives.length}</p>
@@ -48,7 +58,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0 }) 
                 </div>
             </div>
 
-            <div className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg">
+            <div 
+                onClick={() => onCardClick?.('SUSPECT')}
+                className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            >
                 <div>
                     <p className="text-sm text-brand-silver font-medium mb-1">Suspect Servers</p>
                     <p className="text-3xl font-bold text-brand-yellow">{suspects.length}</p>
@@ -58,7 +71,10 @@ export const KPICards: React.FC<KPICardsProps> = ({ data, postponedCount = 0 }) 
                 </div>
             </div>
 
-            <div className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg">
+            <div 
+                onClick={() => onCardClick?.('POSTPONED')}
+                className="bg-panel-bg border border-panel-border rounded-lg p-5 flex items-center justify-between shadow-lg cursor-pointer hover:scale-105 transition-transform"
+            >
                 <div>
                     <p className="text-sm text-brand-silver font-medium mb-1">Postponed</p>
                     <p className="text-3xl font-bold text-brand-blue">{postponedCount}</p>

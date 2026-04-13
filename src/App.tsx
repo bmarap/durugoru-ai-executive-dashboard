@@ -11,6 +11,7 @@ function App() {
   const [error, setError] = useState<string | null>(null);
 
   const [activeTab, setActiveTab] = useState<'overview' | 'postponed'>('overview');
+  const [filterStatus, setFilterStatus] = useState<string>('ALL');
   const [feedbackData, setFeedbackData] = useState<FeedbackItem[]>([]);
   const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState(false);
   const [activeServerForFeedback, setActiveServerForFeedback] = useState<string | null>(null);
@@ -70,6 +71,17 @@ function App() {
   const displayData = activeTab === 'overview' 
     ? data 
     : data.filter(d => feedbackMap[d.server_name]);
+
+  const handleCardClick = (type: string) => {
+    if (type === 'POSTPONED') {
+        setActiveTab('postponed');
+    } else {
+        setActiveTab('overview');
+        setFilterStatus(type === 'TOTAL' ? 'ALL' : type);
+    }
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-brand-navy p-4 md:p-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-6">
@@ -134,7 +146,7 @@ function App() {
             <>
               {activeTab === 'overview' && (
                 <section aria-label="Key Performance Indicators">
-                  <KPICards data={data} postponedCount={feedbackData.length} />
+                  <KPICards data={data} postponedCount={feedbackData.length} onCardClick={handleCardClick} />
                 </section>
               )}
 
@@ -152,6 +164,11 @@ function App() {
                 <DataTable 
                   data={displayData} 
                   feedbackMap={feedbackMap}
+                  filterStatus={activeTab === 'postponed' ? 'ALL' : filterStatus}
+                  onFilterChange={(status) => {
+                      if (activeTab === 'postponed') setActiveTab('overview');
+                      setFilterStatus(status);
+                  }}
                   onMarkFalsePositive={(serverName) => {
                     setActiveServerForFeedback(serverName);
                     setIsFeedbackModalOpen(true);

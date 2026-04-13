@@ -6,6 +6,8 @@ interface DataTableProps {
     data: any[];
     onMarkFalsePositive?: (serverName: string) => void;
     feedbackMap?: Record<string, string>;
+    filterStatus: string;
+    onFilterChange: (status: string) => void;
 }
 
 const getFirewallAppsString = (firewall: any) => {
@@ -28,9 +30,8 @@ const getFirewallAppsString = (firewall: any) => {
     return combined || 'None';
 };
 
-export const DataTable: React.FC<DataTableProps> = ({ data, onMarkFalsePositive, feedbackMap }) => {
+export const DataTable: React.FC<DataTableProps> = ({ data, onMarkFalsePositive, feedbackMap, filterStatus, onFilterChange }) => {
     const [search, setSearch] = useState('');
-    const [filterStatus, setFilterStatus] = useState<string>('ALL');
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
     const [sortConfig, setSortConfig] = useState<{ key: string, direction: 'asc' | 'desc' } | null>(null);
 
@@ -123,7 +124,7 @@ export const DataTable: React.FC<DataTableProps> = ({ data, onMarkFalsePositive,
                     <select
                         className="block w-full pl-3 pr-10 py-2 border border-panel-border rounded-md leading-5 bg-black/30 text-white focus:outline-none focus:ring-1 focus:ring-brand-cyan focus:border-brand-cyan sm:text-sm"
                         value={filterStatus}
-                        onChange={(e) => setFilterStatus(e.target.value)}
+                        onChange={(e) => onFilterChange(e.target.value)}
                     >
                         <option value="ALL">All Status</option>
                         <option value="ACTIVE">Active</option>
